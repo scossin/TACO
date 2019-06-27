@@ -1,0 +1,2 @@
+load.R : an R script used to load the data, a mysqldump of the database is latter done. 
+testAPI.R : test the API, send documents to it and verify it appears on the interface

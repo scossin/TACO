@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app version="3.0"
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+ 
+ 
+    <!-- Note: All <servlet> elements MUST be grouped together and
+         placed IN FRONT of the <servlet-mapping> elements -->
+   
+   
+     <!-- DetectTACO  -->
+   <servlet>
+      <servlet-name>DetectTACO</servlet-name>
+      <servlet-class>erias.fr.taco.servlet.DetectTACO</servlet-class>
+   </servlet>
+  
+   <servlet-mapping>
+      <servlet-name>DetectTACO</servlet-name>
+      <url-pattern>/DetectTACO</url-pattern>
+   </servlet-mapping>
+  
+  <!-- Test detection of TACO  -->
+     <servlet>
+      <servlet-name>TestDetectTACO</servlet-name>
+      <servlet-class>erias.fr.taco.servlet.TestDetectTACO</servlet-class>
+   </servlet>
+  
+   <servlet-mapping>
+      <servlet-name>TestDetectTACO</servlet-name>
+      <url-pattern>/TestDetectTACO</url-pattern>
+   </servlet-mapping>
+  
+  
+  
+</web-app>

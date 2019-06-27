@@ -1,0 +1,44 @@
+version: '3'
+
+services:  
+   nodetaco:
+    build: 
+     context: ./nodeApp
+    image: node/taco:latest
+    container_name: nodeTaco
+    ports:
+     - 5002:${NODE_PORT}
+    depends_on:
+     - mariadbtaco
+     - tomcattaco
+    environment:
+     - MARIADB_NAME=${MARIADB_NAME}
+     - MARIADB_PORT=${MARIADB_PORT}
+     - TOMCAT_NAME=${TOMCAT_NAME}
+     - TOMCAT_PORT=${TOMCAT_PORT}
+    env_file:
+      - ./.env
+   
+   tomcattaco:
+    image: tomcat:8.5
+    container_name: ${TOMCAT_NAME}
+    ports:
+     - 8893:${TOMCAT_PORT}
+    depends_on:
+     - mariadbtaco
+    env_file:
+      - ./.env
+
+   mariadbtaco:
+    image: mariadb:latest
+    container_name: ${MARIADB_NAME}
+    ports:
+     - 3307:${MARIADB_PORT}
+    volumes:
+      - ./mariadb:/mariadb
+    env_file:
+      - ./.env
+    environment:
+     - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+     - USER_MARIADB=${USER_MARIADB}
+     - USERPWD_MARIADB=${USERPWD_MARIADB}

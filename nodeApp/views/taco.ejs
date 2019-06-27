@@ -1,0 +1,78 @@
+<div class="page container-fluid">
+
+
+
+  <div class="control row" style="padding-top:1.5rem;background-color:#aac0d8;font-size: 1rem;">
+
+
+    <div class='col-sm-2'>
+      <div class="form-group" style="overflow:hidden">
+        <label for="datetimepickerFrom">De</label>
+        <input data-toggle="datepicker" id='datetimepickerFrom' style="width:70%">
+        <span class="far fa-calendar-alt"></span>
+      </div>
+    </div>
+
+    <div class='col-sm-2'>
+      <div class="form-group" style="overflow:hidden">
+        <label for="datetimepickerTo">Au</label>
+        <input data-toggle="datepicker" id='datetimepickerTo' style="width:70%">
+        <span class="far fa-calendar-alt"></span>
+      </div>
+    </div>
+
+    <div class='col-sm-2'>
+
+        <select name="validation" style='width:100%'>
+            <option value="0">Nouveaux</option>
+            <option value="1">Validés</option>
+            <option value="2">Invalidés</option>
+          </select>
+    </div>
+
+    <div class='col-sm-2'>
+      <button id="submitSearch" type="submit"><i class="fa fa-redo"></i> Rechercher</button>
+    </div>
+
+  </div>
+
+
+  <div class="patientRecord row" style="height:20px">
+  </div>
+
+
+  <div class="patientRecord row">
+
+    <div class="col-sm-3">
+     <!--  <p id="numberSignaux">20 signaux</p> -->
+      <ul id="list">
+        <li>Chargement...</li>
+      </ul>
+
+    </div>
+
+    <div id="signals" class='col-sm-5'>
+      <p id="phrase"> Sélectionnez un signal</p>
+      <button id="buttonValider" type="button" class="btn-lg">Valider</button>
+      <button id="buttonIgnorer" type="button" class="btn-lg">Invalider</button>
+    </div>
+
+    <div class='col-sm-4'>
+      <div id="patientInfo" >
+          
+          <ul id="listInfoPatient">
+          </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row">
+      
+      <div class='col-sm-10 offset-sm-1'>
+    <table id ="myTable">
+       
+    </table>
+  </div>
+  </div>
+</div>

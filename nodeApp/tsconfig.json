@@ -1,0 +1,14 @@
+{
+
+    "include": [
+        "./ts/**/*"
+    ],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es5",
+        "rootDir": ".",
+        "outDir": "./js",
+        "moduleResolution": "node"
+    }, 
+    "exclude": ["./front/shared"]
+}

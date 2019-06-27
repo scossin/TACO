@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <% include partials/head %>
+    <link rel="stylesheet" href="./css/hemovigilance.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <% include partials/menu %>
+
+    <%- body %>
+
+</body>
+
+
+<script>
+    $('#topheader .navbar-nav a').on('click', function () {
+        $('#topheader .navbar-nav').find('li.active').removeClass('active');
+        $(this).parent('li').addClass('active');
+    });
+    // change the class to active in the narbar menu onclick
+    $('a[href="' + this.location.pathname + '"]').parents('li,ul').addClass('active');
+</script>
+
+</html>

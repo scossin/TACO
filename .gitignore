@@ -1,0 +1,12 @@
+node_modules/
+package-lock.json
+.*
+!.gitignore
+!.env
+target/
+logs/
+data/
+todo.txt
+indexLucene/
+grantPrivileges.sql
+README.html
