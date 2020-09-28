@@ -146,7 +146,7 @@ Les autres métadonnées, pour permettre un retour au dossier quand une alerte e
 ## Démo
 Vous pouvez tester l'interface à cette adresse : http://91.121.106.228:5002/  
 email: demo@chu-bordeaux.fr  
-pwd: demotacto
+pwd: demotaco
 
 Des signaux existent à la date du 6/20/2019
 
