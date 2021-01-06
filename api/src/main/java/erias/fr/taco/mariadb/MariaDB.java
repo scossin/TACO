@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import erias.fr.taco.termDetectors.TermDetector;
 
 
 /**
@@ -67,24 +65,6 @@ public class MariaDB {
 		Class.forName("org.mariadb.jdbc.Driver");
 		Connection conn = DriverManager.getConnection(ConfigMariaDB.getURL(), properties);
 		return(conn);
-	}
-	
-	/**
-	 * Retrieve terms stored in database
-	 * @param termDetector
-	 * @throws SQLException
-	 * @throws ClassNotFoundException 
-	 */
-	public void retrieveTerms(TermDetector termDetector) throws SQLException, ClassNotFoundException {
-		Connection conn = getConnection();
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(this.retrieveTermsReq);
-		while (rs.next()) {
-    		String term = rs.getString(2);
-    		termDetector.addTerm(term, "code");
-    	}
-		rs.close();
-		conn.close();
 	}
 	
 	/**

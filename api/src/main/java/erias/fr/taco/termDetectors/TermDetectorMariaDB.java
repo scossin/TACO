@@ -7,15 +7,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import erias.fr.taco.mariadb.MariaDB;
-import fr.erias.IAMsystem.detect.Synonym;
+import fr.erias.IAMsystem.detect.TermDetector;
 import fr.erias.IAMsystem.exceptions.UnfoundTokenInSentence;
+import fr.erias.IAMsystem.synonym.ISynonym;
+import fr.erias.IAMsystem.terminology.Terminology;
 
 public class TermDetectorMariaDB {
 	
 	/**
 	 * Connection to mariaDB
 	 */
-	private MariaDB mariaDB;
+	private final MariaDB mariaDB;
+	
+	/**
+	 * TermDetector
+	 */
+	private final TermDetector termDetector;
 	
 	/**
 	 * 
@@ -23,6 +30,17 @@ public class TermDetectorMariaDB {
 	 */
 	public TermDetectorMariaDB(MariaDB mariaDB) {
 		this.mariaDB = mariaDB;
+		this.termDetector = new TermDetector();
+		try {
+			retrieveStopwords(termDetector);
+			retrieveAbbreviations(termDetector);
+			Terminology terminology = retrieveTerms(termDetector);
+			termDetector.addTerminology(terminology);
+			addLuceneTypos(termDetector, terminology);
+		} catch (ClassNotFoundException | SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -33,17 +51,12 @@ public class TermDetectorMariaDB {
 	 * @throws IOException 
 	 */
 	public TermDetector getTermDetector() throws ClassNotFoundException, SQLException, IOException {
-		TermDetector termDetector = new TermDetector();
-		retrieveStopwords(termDetector);
-		retrieveTerms(termDetector);
-		retrieveAbbreviations(termDetector);
-		addLuceneTypos(termDetector);
 		return(termDetector);
 	}
 	
-	private void addLuceneTypos(TermDetector termDetector) throws ClassNotFoundException, IOException, SQLException {
-		Synonym synonym = new LuceneTypos(this.mariaDB).getLevenshteinSynonym();
-		termDetector.getDetectDictionaryEntry().addSynonym(synonym);
+	private void addLuceneTypos(TermDetector termDetector, Terminology terminology) throws ClassNotFoundException, IOException, SQLException {
+		ISynonym synonym = new LuceneTypos(terminology, termDetector.getTokenizerNormalizer()).getLevenshteinSynonym();
+		termDetector.addSynonym(synonym);
 	}
 	
 	
@@ -53,17 +66,19 @@ public class TermDetectorMariaDB {
 	 * @throws SQLException
 	 * @throws ClassNotFoundException 
 	 */
-	private void retrieveTerms(TermDetector termDetector) throws SQLException, ClassNotFoundException {
+	private Terminology retrieveTerms(TermDetector termDetector) throws SQLException, ClassNotFoundException {
 		Connection conn = mariaDB.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM terms;");
+		Terminology terminology = new Terminology();
 		while (rs.next()) {
 			String term = rs.getString(1);
     		String code = rs.getString(3);
-    		termDetector.addTerm(term, code);
+    		terminology.addTerm(term, code, termDetector.getTokenizerNormalizer().getNormalizer());
     	}
 		rs.close();
 		conn.close();
+		return(terminology);
 	}
 	
 	private void retrieveAbbreviations(TermDetector termDetector) throws SQLException, ClassNotFoundException {
@@ -98,11 +113,8 @@ public class TermDetectorMariaDB {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, UnfoundTokenInSentence, IOException {
 		MariaDB mariaDB = new MariaDB();
 		mariaDB.checkConnection();
-		
-		
 		TermDetectorMariaDB termDetectorMariaDB = new TermDetectorMariaDB(mariaDB);
 		TermDetector termDetector = termDetectorMariaDB.getTermDetector();
-		
-		System.out.println(termDetector.detect("concentrés de GR").size());
+		System.out.println(termDetector.detect("concentrés de GR").getCTcodes().size());
 	}
 }

@@ -3,7 +3,8 @@ package erias.fr.taco.termDetectors;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import fr.erias.IAMsystem.detect.Synonym;
+import fr.erias.IAMsystem.synonym.ISynonym;
+
 
 /**
  * Manage and store abbreviations
@@ -11,7 +12,7 @@ import fr.erias.IAMsystem.detect.Synonym;
  * @author Cossin Sebastien
  *
  */
-public class Abbreviations implements Synonym {
+public class Abbreviations implements ISynonym {
 	
 	private HashMap<String, HashSet<String[]>> abbreviations;
 	

@@ -1,9 +1,11 @@
 package erias.fr.taco.analyze;
 
 import java.util.TreeSet;
+
 import org.json.JSONObject;
-import erias.fr.taco.termDetectors.TermDetector;
 import fr.erias.IAMsystem.ct.CTcode;
+import fr.erias.IAMsystem.detect.DetectOutput;
+import fr.erias.IAMsystem.detect.TermDetector;
 import fr.erias.IAMsystem.exceptions.UnfoundTokenInSentence;
 
 /**
@@ -41,8 +43,9 @@ public class SentenceAnalyzer {
 	 * @throws UnfoundTokenInSentence
 	 */
 	public void analyzeSentence(String sentence, DocumentDW doc) throws UnfoundTokenInSentence {
-		TreeSet<CTcode> cts = termDetector.detect(sentence);
-		String normalizedSentence = termDetector.getTokenizerNormalizer().getNormalizerTerm().getNormalizedSentence();
+		DetectOutput output = termDetector.detect(sentence);
+		TreeSet<CTcode> cts = output.getCTcodes();
+		String normalizedSentence = output.getTNoutput().getNormalizedSentence();
 		detectionHandler.handleDetection(normalizedSentence, cts , doc);
 	}
 	
@@ -53,8 +56,9 @@ public class SentenceAnalyzer {
 	 * @throws UnfoundTokenInSentence
 	 */
 	public JSONObject testDetection(String sentence) throws UnfoundTokenInSentence {
-		TreeSet<CTcode> cts = termDetector.detect(sentence);
-		String normalizedSentence = termDetector.getTokenizerNormalizer().getNormalizerTerm().getNormalizedSentence();
+		DetectOutput output = termDetector.detect(sentence);
+		TreeSet<CTcode> cts = output.getCTcodes();
+		String normalizedSentence = output.getTNoutput().getNormalizedSentence();
 		return(detectionHandler.testDetection(normalizedSentence, cts));
 	}
 }

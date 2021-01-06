@@ -1,13 +1,10 @@
 package erias.fr.taco.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.Scanner;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +14,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import erias.fr.taco.analyze.DocumentDW;
 import erias.fr.taco.exceptions.InvalidArraysLength;
 import fr.erias.IAMsystem.exceptions.UnfoundTokenInSentence;
 
