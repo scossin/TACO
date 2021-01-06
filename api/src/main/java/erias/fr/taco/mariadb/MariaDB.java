@@ -130,7 +130,7 @@ public class MariaDB {
                 		"SELECT * from terms")) {
                     //position result to first
                 	while (rs.next()) {
-                		String term = rs.getString(3);
+                		String term = rs.getString(2);
                 		System.out.println(term);
                 	}
                 }
