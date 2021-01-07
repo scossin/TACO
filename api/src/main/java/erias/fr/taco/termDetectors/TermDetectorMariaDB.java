@@ -65,11 +65,11 @@ public class TermDetectorMariaDB {
 	private Terminology retrieveTerms(TermDetector termDetector) throws SQLException, ClassNotFoundException {
 		Connection conn = mariaDB.getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM terms;");
+		ResultSet rs = stmt.executeQuery("SELECT term, code FROM terms;");
 		Terminology terminology = new Terminology();
 		while (rs.next()) {
-			String term = rs.getString(1);
-    		String code = rs.getString(3);
+			String term = rs.getString("term");
+    		String code = rs.getString("code");
     		terminology.addTerm(term, code, termDetector.getTokenizerNormalizer().getNormalizer());
     	}
 		rs.close();
@@ -77,14 +77,20 @@ public class TermDetectorMariaDB {
 		return(terminology);
 	}
 	
+	/**
+	 * Add abbreviations to the termDetector
+	 * @param termDetector
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	private void retrieveAbbreviations(TermDetector termDetector) throws SQLException, ClassNotFoundException {
 		IStopwords stopwords = termDetector.getTokenizerNormalizer().getNormalizer().getStopwords();
 		Connection conn = mariaDB.getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM abbreviations;");
+		ResultSet rs = stmt.executeQuery("SELECT abbreviation, term FROM abbreviations;");
 		while (rs.next()) {
-			String abbreviation = rs.getString(1);
-    		String term = rs.getString(2);
+			String abbreviation = rs.getString("abbreviation");
+    		String term = rs.getString("term");
     		String[] tokensArray = termDetector.getTokenizerNormalizer().tokenizeNormalize(term).getTokens();
     		tokensArray = IStopwords.removeStopWords(stopwords, tokensArray);
     		String normalizedTerm = ITokenizer.arrayToString(tokensArray, " ".charAt(0));
@@ -94,15 +100,19 @@ public class TermDetectorMariaDB {
 		conn.close();
 	}
 	
-	private String getStopwordsReq = "SELECT * FROM stopwords;";
-	
+	/**
+	 * add stopwords to the TermDetector
+	 * @param termDetector
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	private void retrieveStopwords(TermDetector termDetector) throws SQLException, ClassNotFoundException {
 		Connection conn = mariaDB.getConnection();
 		Statement stmt = conn.createStatement();
 		IStopwords stopwords = new StopwordsImpl();
-		ResultSet rs = stmt.executeQuery(getStopwordsReq);
+		ResultSet rs = stmt.executeQuery("SELECT stopword FROM stopwords;");
 		while (rs.next()) {
-			String stopword = rs.getString(1);
+			String stopword = rs.getString("stopword");
 			stopwords.addStopwords(stopword);
     	}
 		rs.close();
@@ -115,6 +125,6 @@ public class TermDetectorMariaDB {
 		mariaDB.checkConnection();
 		TermDetectorMariaDB termDetectorMariaDB = new TermDetectorMariaDB(mariaDB);
 		TermDetector termDetector = termDetectorMariaDB.getTermDetector();
-		System.out.println(termDetector.detect("concentres culots globulairess").getCTcodes().size());
+		System.out.println(termDetector.detect("concenttre de globules rouges").getCTcodes().size());
 	}
 }
