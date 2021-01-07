@@ -48,8 +48,18 @@ public class ConfigMariaDB {
 			PASSWORD = pwd;
 		}
 
+		// environment
+		String host = System.getenv("HOST_MARIADB");
+		if (!(host == null)) {
+			HOST = host;
+		}
 		
-		setDockerEndpoint();
+		// docker
+		if (HOST == null) {
+			setDockerEndpoint();
+		}
+		
+		// localhost
 		if (HOST == null) {
 			localhostEndpoint();
 		}
