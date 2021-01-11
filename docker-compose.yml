@@ -33,7 +33,7 @@ services:
     image: mariadb:latest
     container_name: ${MARIADB_NAME}
     ports:
-     - ${MARIADB_PORT}:3306
+     - ${MARIADB_OUTSIDE_PORT}:${MARIADB_PORT}
     volumes:
       - ./mariadb:/mariadb
     env_file:
